@@ -4,6 +4,7 @@ export type GameResponse = {
   maxNumberOfGuesses: number;
   wordLength: number;
   status: GameStatus;
+  guesses: GuessResponse[];
 };
 
 export type GuessResponse = {

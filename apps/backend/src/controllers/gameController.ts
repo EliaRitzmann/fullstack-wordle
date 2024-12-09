@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { makeGuess, startGame } from "../services/gameService";
+import { getGame, makeGuess, startGame } from "../services/gameService";
 
 const router = express.Router();
 
@@ -56,6 +56,34 @@ router.post("/start", async (req: Request, res: Response) => {
     res.status(200).json(gameResponse);
   } catch (error) {
     console.error("Error starting game:", error);
+    res.status(500).json({ error: "An internal server error occurred." });
+  }
+});
+
+router.get("/:gameId", async (req: Request, res: Response) => {
+  try {
+    const { gameId } = req.params;
+
+    // Validate required parameters
+    if (!gameId) {
+      return res.status(400).json({
+        error: "Missing parameters. Please provide a gameId.",
+      });
+    }
+
+    const gameIdNumber = parseInt(gameId, 10);
+
+    if (isNaN(gameIdNumber) || gameIdNumber <= 0) {
+      return res
+        .status(400)
+        .json({ error: "Invalid gameId. Must be a positive integer." });
+    }
+
+    const gameResponse = await getGame(gameIdNumber);
+
+    res.status(200).json(gameResponse);
+  } catch (error) {
+    console.error("Error getting game:", error);
     res.status(500).json({ error: "An internal server error occurred." });
   }
 });

@@ -25,8 +25,42 @@ export const startGame = async (
     maxNumberOfGuesses: game.numberOfGuesses,
     wordLength: game.word.length,
     status: game.status as GameStatus,
+    guesses: [],
   };
 
+  return gameResponse;
+};
+
+export const getGame = async (gameId: number): Promise<GameResponse> => {
+  const game = await prisma.game.findUnique({
+    where: {
+      id: gameId,
+    },
+    include: { guesses: true },
+  });
+
+  if (!game) {
+    throw new Error(`No game found with id ${gameId}.`);
+  }
+
+  const gameResponse: GameResponse = {
+    gameId: game.id,
+    username: game.username,
+    maxNumberOfGuesses: game.numberOfGuesses,
+    wordLength: game.word.length,
+    status: game.status as GameStatus,
+    guesses: game.guesses.map(
+      (guess: Guess) =>
+        ({
+          currentTry: guess.id,
+          maxTries: game.numberOfGuesses,
+          username: game.username,
+          yourGuess: guess.guess,
+          guessResult: guess.guessResult,
+          status: game.status as GameStatus,
+        } as GuessResponse)
+    ),
+  };
   return gameResponse;
 };
 
