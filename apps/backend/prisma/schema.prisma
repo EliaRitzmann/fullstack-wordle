@@ -20,9 +20,10 @@ model Game {
 }
 
 model Guess {
-  id        Int      @id @default(autoincrement())
-  gameId    Int
-  game      Game     @relation(fields: [gameId], references: [id])
-  guess     String
-  timestamp DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  gameId      Int
+  game        Game     @relation(fields: [gameId], references: [id])
+  guess       String
+  guessResult String
+  timestamp   DateTime @default(now())
 }

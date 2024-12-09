@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
-import { startGame } from "../services/gameService";
+import { makeGuess, startGame } from "../services/gameService";
 
 const router = express.Router();
 
-router.get("/start", async (req: Request, res: Response) => {
+router.post("/start", async (req: Request, res: Response) => {
   try {
     const { username, maxNumberOfGuesses = 6, wordLength = 5 } = req.query;
 
@@ -56,6 +56,40 @@ router.get("/start", async (req: Request, res: Response) => {
     res.status(200).json(gameResponse);
   } catch (error) {
     console.error("Error starting game:", error);
+    res.status(500).json({ error: "An internal server error occurred." });
+  }
+});
+
+router.post("/guess", async (req: Request, res: Response) => {
+  try {
+    const { gameId, wordGuess } = req.query;
+
+    // Validate required parameters
+    if (!gameId || !wordGuess) {
+      return res.status(400).json({
+        error: "Missing parameters. Please provide a gameId and guess a word.",
+      });
+    }
+
+    const gameIdNumber = parseInt(gameId as string, 10);
+
+    if (isNaN(gameIdNumber) || gameIdNumber <= 0) {
+      return res
+        .status(400)
+        .json({ error: "Invalid gameId. Must be a positive integer." });
+    }
+
+    if (typeof wordGuess !== "string" || wordGuess.trim() === "") {
+      return res
+        .status(400)
+        .json({ error: "Invalid guess. Must be a non-empty string." });
+    }
+
+    const guessResponse = await makeGuess(gameIdNumber, wordGuess);
+
+    res.status(200).json(guessResponse);
+  } catch (error) {
+    console.error("Error making guess:", error);
     res.status(500).json({ error: "An internal server error occurred." });
   }
 });
