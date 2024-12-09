@@ -1,5 +1,5 @@
 export type GameResponse = {
-  gameId: number;
+  gameId: string;
   username: string;
   maxNumberOfGuesses: number;
   wordLength: number;
@@ -8,12 +8,13 @@ export type GameResponse = {
 };
 
 export type GuessResponse = {
+  guessId: string;
   currentTry: number;
   maxTries: number;
   username: string;
   yourGuess: string;
   guessResult: string; // A string like "CXX", indicating feedback for each letter
-  status: GameStatus;
+  gameStatus?: GameStatus;
 };
 
 export type GameStatus = "active" | "won" | "lost";

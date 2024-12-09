@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Game {
-  id              Int     @id @default(autoincrement())
+  id              String  @id @default(uuid())
   username        String
   word            String
   numberOfGuesses Int
@@ -20,8 +20,8 @@ model Game {
 }
 
 model Guess {
-  id          Int      @id @default(autoincrement())
-  gameId      Int
+  id          String   @id @default(uuid())
+  gameId      String
   game        Game     @relation(fields: [gameId], references: [id])
   guess       String
   guessResult String

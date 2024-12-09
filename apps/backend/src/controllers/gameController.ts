@@ -71,15 +71,13 @@ router.get("/:gameId", async (req: Request, res: Response) => {
       });
     }
 
-    const gameIdNumber = parseInt(gameId, 10);
-
-    if (isNaN(gameIdNumber) || gameIdNumber <= 0) {
+    if (gameId.length !== 36) {
       return res
         .status(400)
-        .json({ error: "Invalid gameId. Must be a positive integer." });
+        .json({ error: "Invalid gameId. Must be a valid UUID." });
     }
 
-    const gameResponse = await getGame(gameIdNumber);
+    const gameResponse = await getGame(gameId);
 
     res.status(200).json(gameResponse);
   } catch (error) {
@@ -99,12 +97,10 @@ router.post("/guess", async (req: Request, res: Response) => {
       });
     }
 
-    const gameIdNumber = parseInt(gameId as string, 10);
-
-    if (isNaN(gameIdNumber) || gameIdNumber <= 0) {
+    if (gameId.length !== 36) {
       return res
         .status(400)
-        .json({ error: "Invalid gameId. Must be a positive integer." });
+        .json({ error: "Invalid gameId. Must be a valid UUID." });
     }
 
     if (typeof wordGuess !== "string" || wordGuess.trim() === "") {
@@ -113,7 +109,7 @@ router.post("/guess", async (req: Request, res: Response) => {
         .json({ error: "Invalid guess. Must be a non-empty string." });
     }
 
-    const guessResponse = await makeGuess(gameIdNumber, wordGuess);
+    const guessResponse = await makeGuess(gameId as string, wordGuess);
 
     res.status(200).json(guessResponse);
   } catch (error) {

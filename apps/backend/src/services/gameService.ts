@@ -31,7 +31,7 @@ export const startGame = async (
   return gameResponse;
 };
 
-export const getGame = async (gameId: number): Promise<GameResponse> => {
+export const getGame = async (gameId: string): Promise<GameResponse> => {
   const game = await prisma.game.findUnique({
     where: {
       id: gameId,
@@ -52,12 +52,12 @@ export const getGame = async (gameId: number): Promise<GameResponse> => {
     guesses: game.guesses.map(
       (guess: Guess) =>
         ({
-          currentTry: guess.id,
+          guessId: guess.id,
+          currentTry: game.guesses.indexOf(guess) + 1,
           maxTries: game.numberOfGuesses,
           username: game.username,
           yourGuess: guess.guess,
           guessResult: guess.guessResult,
-          status: game.status as GameStatus,
         } as GuessResponse)
     ),
   };
@@ -65,7 +65,7 @@ export const getGame = async (gameId: number): Promise<GameResponse> => {
 };
 
 export const makeGuess = async (
-  gameId: number,
+  gameId: string,
   wordGuess: string
 ): Promise<GuessResponse> => {
   const game = await prisma.game.findUnique({
@@ -81,6 +81,20 @@ export const makeGuess = async (
 
   if (game.status !== "active") {
     throw new Error(`Game with id ${gameId} is not active.`);
+  }
+
+  if (game.numberOfGuesses === game.guesses.length) {
+    throw new Error(`No more guesses allowed for game with id ${gameId}.`);
+  }
+
+  if (wordGuess.length !== game.word.length) {
+    throw new Error(
+      `Invalid guess length. Must be ${game.word.length} characters.`
+    );
+  }
+
+  if (!/^[a-zA-Z]+$/.test(wordGuess)) {
+    throw new Error("Invalid guess. Must contain only letters.");
   }
 
   const guessResult = checkGuess(game.word, wordGuess);
@@ -115,12 +129,13 @@ export const makeGuess = async (
   }
 
   const guessResponse: GuessResponse = {
+    guessId: guess.id,
     currentTry: game.guesses.length,
     maxTries: game.numberOfGuesses,
     username: game.username,
     yourGuess: guess.guess,
     guessResult: guess.guessResult,
-    status: game.status as GameStatus,
+    gameStatus: game.status as GameStatus,
   };
 
   return guessResponse;
