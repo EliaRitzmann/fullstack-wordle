@@ -23,6 +23,6 @@ model Guess {
   id        Int      @id @default(autoincrement())
   gameId    Int
   game      Game     @relation(fields: [gameId], references: [id])
-  gues     String
+  guess     String
   timestamp DateTime @default(now())
 }
