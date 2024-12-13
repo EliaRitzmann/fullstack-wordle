@@ -1,121 +1,55 @@
 import express, { Request, Response } from "express";
 import { getGame, makeGuess, startGame } from "../services/gameService";
+import { validateRequest } from "../middlewares/validateRequest";
+import {
+  getGameByIdSchema,
+  postMakeGuessSchema,
+  postStartGameSchema,
+} from "../schemas/gameSchemas";
 
 const router = express.Router();
 
-router.post("/start", async (req: Request, res: Response) => {
-  try {
-    const { username, maxNumberOfGuesses = 6, wordLength = 5 } = req.query;
-
-    // Validate required parameters
-    if (!username || !maxNumberOfGuesses || !wordLength) {
-      return res.status(400).json({
-        error:
-          "Missing parameters. Please provide a username and optionally maxNumberOfGuesses and wordLength.",
-      });
-    }
-
-    if (typeof username !== "string" || username.trim() === "") {
-      return res
-        .status(400)
-        .json({ error: "Invalid username. Must be a non-empty string." });
-    }
-
-    if (username.length < 4 || username.length > 20) {
-      return res.status(400).json({
-        error: "Invalid username. Must be between 4 and 20 characters.",
-      });
-    }
-
-    const maxNumberOfGuessesNumber = parseInt(maxNumberOfGuesses as string, 10);
-    const wordLengthNumber = parseInt(wordLength as string, 10);
-
-    if (
-      isNaN(maxNumberOfGuessesNumber) ||
-      maxNumberOfGuessesNumber < 1 ||
-      maxNumberOfGuessesNumber > 10
-    ) {
-      return res.status(400).json({
-        error:
-          "Invalid maxNumberOfGuesses. Must be an integer between 1 and 10.",
-      });
-    }
-
-    if (isNaN(wordLengthNumber) || wordLengthNumber <= 0) {
-      return res
-        .status(400)
-        .json({ error: "Invalid wordLength. Must be a positive integer." });
-    }
+router.post(
+  "/start",
+  validateRequest(postStartGameSchema),
+  async (req: Request, res: Response) => {
+    const {
+      username,
+      maxNumberOfGuesses = 6,
+      wordLength = 5,
+    } = req.query as Record<string, string>;
 
     const gameResponse = await startGame(
-      username as string,
-      maxNumberOfGuessesNumber,
-      wordLengthNumber
+      username,
+      Number(maxNumberOfGuesses),
+      Number(wordLength)
     );
-
     res.status(200).json(gameResponse);
-  } catch (error) {
-    console.error("Error starting game:", error);
-    res.status(500).json({ error: "An internal server error occurred." });
   }
-});
+);
 
-router.get("/:gameId", async (req: Request, res: Response) => {
-  try {
-    const { gameId } = req.params;
-
-    // Validate required parameters
-    if (!gameId) {
-      return res.status(400).json({
-        error: "Missing parameters. Please provide a gameId.",
-      });
-    }
-
-    if (gameId.length !== 36) {
-      return res
-        .status(400)
-        .json({ error: "Invalid gameId. Must be a valid UUID." });
-    }
+router.get(
+  "/:gameId",
+  validateRequest(getGameByIdSchema),
+  async (req: Request, res: Response) => {
+    const { gameId } = req.params as Record<string, string>;
 
     const gameResponse = await getGame(gameId);
 
     res.status(200).json(gameResponse);
-  } catch (error) {
-    console.error("Error getting game:", error);
-    res.status(500).json({ error: "An internal server error occurred." });
   }
-});
+);
 
-router.post("/guess", async (req: Request, res: Response) => {
-  try {
-    const { gameId, wordGuess } = req.query;
+router.post(
+  "/guess",
+  validateRequest(postMakeGuessSchema),
+  async (req: Request, res: Response) => {
+    const { gameId, wordGuess } = req.query as Record<string, string>;
 
-    // Validate required parameters
-    if (!gameId || !wordGuess) {
-      return res.status(400).json({
-        error: "Missing parameters. Please provide a gameId and guess a word.",
-      });
-    }
-
-    if (gameId.length !== 36) {
-      return res
-        .status(400)
-        .json({ error: "Invalid gameId. Must be a valid UUID." });
-    }
-
-    if (typeof wordGuess !== "string" || wordGuess.trim() === "") {
-      return res
-        .status(400)
-        .json({ error: "Invalid guess. Must be a non-empty string." });
-    }
-
-    const guessResponse = await makeGuess(gameId as string, wordGuess);
+    const guessResponse = await makeGuess(gameId, wordGuess);
 
     res.status(200).json(guessResponse);
-  } catch (error) {
-    console.error("Error making guess:", error);
-    res.status(500).json({ error: "An internal server error occurred." });
   }
-});
+);
 
 export default router;
