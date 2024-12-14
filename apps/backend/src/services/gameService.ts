@@ -2,6 +2,7 @@ import { Game, Guess } from "@prisma/client";
 import prisma from "../config/database";
 import { getRandomWord } from "./wordService";
 import { GameResponse, GameStatus, GuessResponse } from "../types/types";
+import createHttpError from "http-errors";
 
 export const startGame = async (
   username: string,
@@ -40,10 +41,10 @@ export const getGame = async (gameId: string): Promise<GameResponse> => {
   });
 
   if (!game) {
-    throw new Error(`No game found with id ${gameId}.`);
+    throw createHttpError(404, `No game found with id ${gameId}.`);
   }
 
-  const gameResponse: GameResponse = {
+  return {
     gameId: game.id,
     username: game.username,
     maxNumberOfGuesses: game.numberOfGuesses,
@@ -61,7 +62,6 @@ export const getGame = async (gameId: string): Promise<GameResponse> => {
         } as GuessResponse)
     ),
   };
-  return gameResponse;
 };
 
 export const makeGuess = async (
@@ -76,25 +76,26 @@ export const makeGuess = async (
   });
 
   if (!game) {
-    throw new Error(`No game found with id ${gameId}.`);
+    throw createHttpError(404, `No game found with id ${gameId}.`);
   }
 
   if (game.status !== "active") {
-    throw new Error(`Game with id ${gameId} is not active.`);
+    throw createHttpError(400, `Game with id ${gameId} is not active.`);
   }
 
   if (game.numberOfGuesses === game.guesses.length) {
-    throw new Error(`No more guesses allowed for game with id ${gameId}.`);
+    throw createHttpError(400, `Game with id ${gameId} has ended.`);
   }
 
   if (wordGuess.length !== game.word.length) {
-    throw new Error(
-      `Invalid guess length. Must be ${game.word.length} characters.`
+    throw createHttpError(
+      400,
+      `Invalid guess. Must be ${game.word.length} characters long.`
     );
   }
 
   if (!/^[a-zA-Z]+$/.test(wordGuess)) {
-    throw new Error("Invalid guess. Must contain only letters.");
+    throw createHttpError(400, "Invalid guess. Must contain only letters.");
   }
 
   const guessResult = checkGuess(game.word, wordGuess);

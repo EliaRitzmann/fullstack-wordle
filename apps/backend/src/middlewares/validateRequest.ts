@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import createHttpError from "http-errors";
 import { z } from "zod";
 
 export const validateRequest = (schema: z.ZodSchema) => {
@@ -13,9 +14,9 @@ export const validateRequest = (schema: z.ZodSchema) => {
       next();
     } catch (error) {
       if (error instanceof z.ZodError) {
-        return res.status(400).json({ error: error.errors });
+        throw createHttpError(400, error.errors[0].message);
       }
-      next(error);
+      throw createHttpError(500, "Internal Server Error");
     }
   };
 };
