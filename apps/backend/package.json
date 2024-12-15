@@ -5,7 +5,9 @@
     "dev": "nodemon src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "jest"
+    "test": "jest",
+    "migrate": "npx prisma migrate dev",
+    "script:populateWords": "npx ts-node scripts/populateWords.ts"
   },
   "keywords": [],
   "author": "",

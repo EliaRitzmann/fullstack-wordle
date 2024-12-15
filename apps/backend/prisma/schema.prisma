@@ -27,3 +27,11 @@ model Guess {
   guessResult String
   timestamp   DateTime @default(now())
 }
+
+model Word {
+  id           String @id @default(uuid())
+  languageCode String // ISO 639 language code
+  word         String
+
+  @@unique([languageCode, word])
+}
