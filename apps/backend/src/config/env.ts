@@ -4,7 +4,7 @@ import * as process from "process";
 const envFile = ".env.local";
 dotenv.config({ path: envFile });
 
-const requiredVars = ["NODE_ENV"];
+const requiredVars = ["NODE_ENV", "DATABASE_URL"];
 
 // Validate environment variables
 requiredVars.forEach((key) => {

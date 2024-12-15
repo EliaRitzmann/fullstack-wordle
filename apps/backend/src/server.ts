@@ -5,7 +5,7 @@ import { connectToDatabase } from "./config/database";
 import { errorMiddleware } from "./middlewares/exceptionHandling";
 import envConfig from "./config/env";
 
-const app = express();
+export const app = express();
 
 app.use(express.json());
 
