@@ -23,8 +23,7 @@ describe("Game Integration Tests", () => {
       gameId,
       username: "test",
       maxNumberOfGuesses: 6,
-      // TODO: Implement wordLength as soon as WordService is implemented
-      // wordLength: 5,
+      wordLength: 5,
     });
   });
 });

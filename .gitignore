@@ -3,3 +3,4 @@ node_modules
 
 apps/backend/prisma/dev.db
 apps/backend/prisma/dev.db-journal
+apps/backend/coverage/
