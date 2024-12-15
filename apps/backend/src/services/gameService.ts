@@ -1,6 +1,6 @@
 import { Game, Guess } from "@prisma/client";
 import prisma from "../config/database";
-import { getRandomWord } from "./wordService";
+import { checkGuess, getRandomWord } from "./wordService";
 import { GameResponse, GameStatus, GuessResponse } from "../types/types";
 import createHttpError from "http-errors";
 
@@ -140,37 +140,4 @@ export const makeGuess = async (
   };
 
   return guessResponse;
-};
-
-const checkGuess = (word: string, guess: string): string => {
-  let feedback = "";
-
-  word = word.toLowerCase();
-  guess = guess.toLowerCase();
-
-  const wordLetterCount = new Map<string, number>();
-
-  for (const char of word) {
-    wordLetterCount.set(char, (wordLetterCount.get(char) || 0) + 1);
-  }
-
-  // Step 1: Check for exact matches (correct letter in the correct position)
-  for (let i = 0; i < word.length; i++) {
-    if (guess[i] === word[i]) {
-      feedback += "+";
-      wordLetterCount.set(word[i], wordLetterCount.get(word[i])! - 1); // Decrease the count for that letter
-    } else {
-      feedback += "-";
-    }
-  }
-
-  // Step 2: Check for letters in the wrong position (correct letter, wrong place)
-  for (let i = 0; i < word.length; i++) {
-    if (feedback[i] === "-" && wordLetterCount.get(guess[i])! > 0) {
-      feedback = feedback.substring(0, i) + "*" + feedback.substring(i + 1); // Update feedback for this letter
-      wordLetterCount.set(guess[i], wordLetterCount.get(guess[i])! - 1); // Decrease count for this letter
-    }
-  }
-
-  return feedback;
 };
