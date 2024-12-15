@@ -32,6 +32,7 @@ model Word {
   id           String @id @default(uuid())
   languageCode String // ISO 639 language code
   word         String
+  wordLength   Int
 
   @@unique([languageCode, word])
 }

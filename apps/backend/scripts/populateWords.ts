@@ -36,8 +36,9 @@ async function populateWords() {
         const words = readWordsFromFile(filePath);
 
         const wordData = words.map((word) => ({
-          languageCode,
-          word,
+          languageCode: languageCode,
+          word: word,
+          wordLength: word.length,
         }));
 
         await prisma.word
