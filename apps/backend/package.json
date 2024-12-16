@@ -5,7 +5,9 @@
     "dev": "nodemon src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "jest"
+    "test": "jest",
+    "migrate": "npx prisma migrate dev",
+    "script:populateWords": "npx ts-node scripts/populateWords.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +18,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "http-errors": "^2.0.0",
+    "jest-mock-extended": "^4.0.0-beta1",
     "zod": "^3.24.0"
   },
   "devDependencies": {

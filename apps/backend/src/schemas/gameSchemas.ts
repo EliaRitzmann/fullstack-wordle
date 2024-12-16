@@ -17,8 +17,8 @@ export const postStartGameSchema = z.object({
     wordLength: z
       .string()
       .transform(Number)
-      .refine((n) => n > 0, {
-        message: "wordLength must be a positive integer",
+      .refine((n) => n > 3, {
+        message: "wordLength must be greater than 3",
       })
       .optional(),
   }),

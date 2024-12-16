@@ -5,6 +5,7 @@ export type GameResponse = {
   wordLength: number;
   status: GameStatus;
   guesses: GuessResponse[];
+  correctWord?: string; // Only present if game is won or lost
 };
 
 export type GuessResponse = {

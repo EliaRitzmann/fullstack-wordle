@@ -1,30 +1,30 @@
 import request from "supertest";
 import { app } from "../../src/server";
+import { prismaMock } from "../setup";
 
-describe("Game Integration Tests", () => {
-  let gameId: string;
-
-  it("should create a new game", async () => {
+describe("error handling", () => {
+  it("should return 400 for invalid maxNumberOfGuesses", async () => {
     const res = await request(app).post("/game/start").query({
       username: "test",
-      maxNumberOfGuesses: "6",
-      wordLength: "5",
+      maxNumberOfGuesses: "0",
     });
 
-    expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty("gameId");
-    gameId = res.body.gameId;
+    expect(res.status).toBe(400);
   });
 
-  it("should fetch the created game", async () => {
-    const res = await request(app).get(`/game/${gameId}`);
-    expect(res.status).toBe(200);
-    expect(res.body).toMatchObject({
-      gameId,
+  it("should return 400 for invalid wordLength", async () => {
+    const res = await request(app).post("/game/start").query({
       username: "test",
-      maxNumberOfGuesses: 6,
-      // TODO: Implement wordLength as soon as WordService is implemented
-      // wordLength: 5,
+      wordLength: "1",
     });
+
+    expect(res.status).toBe(400);
+  });
+
+  it("should return 404 for invalid gameId", async () => {
+    const res = await request(app).get(
+      "/game/0d4726f0-ff92-49fc-bfc9-ce44952d82f5"
+    );
+    expect(res.status).toBe(404);
   });
 });

@@ -1,6 +1,6 @@
 import { Game, Guess } from "@prisma/client";
 import prisma from "../config/database";
-import { checkGuess, getRandomWord } from "./wordService";
+import { checkGuess, checkIfWordExists, getRandomWord } from "./wordService";
 import { GameResponse, GameStatus, GuessResponse } from "../types/types";
 import createHttpError from "http-errors";
 
@@ -9,12 +9,12 @@ export const startGame = async (
   maxNumberOfGuesses: number,
   wordLength: number
 ): Promise<GameResponse> => {
-  const randomWord = await getRandomWord(wordLength);
+  const randomWordObject = await getRandomWord(wordLength);
 
   const game: Game = await prisma.game.create({
     data: {
       username: username,
-      word: randomWord,
+      word: randomWordObject.word,
       numberOfGuesses: maxNumberOfGuesses,
       status: "active",
     },
@@ -44,12 +44,19 @@ export const getGame = async (gameId: string): Promise<GameResponse> => {
     throw createHttpError(404, `No game found with id ${gameId}.`);
   }
 
+  let correctWordResponse: string | undefined;
+
+  if (game.status === "won" || game.status === "lost") {
+    correctWordResponse = game.word;
+  }
+
   return {
     gameId: game.id,
     username: game.username,
     maxNumberOfGuesses: game.numberOfGuesses,
     wordLength: game.word.length,
     status: game.status as GameStatus,
+    correctWord: correctWordResponse,
     guesses: game.guesses.map(
       (guess: Guess) =>
         ({
@@ -98,6 +105,15 @@ export const makeGuess = async (
     throw createHttpError(400, "Invalid guess. Must contain only letters.");
   }
 
+  if ((await checkIfWordExists(wordGuess)) === false) {
+    throw createHttpError(
+      400,
+      "Invalid guess. Word does not exist in the dictionary."
+    );
+  }
+
+  const currentNumberOfGuesses = game.guesses.length + 1;
+
   const guessResult = checkGuess(game.word, wordGuess);
 
   const guess: Guess = await prisma.guess.create({
@@ -108,35 +124,32 @@ export const makeGuess = async (
     },
   });
 
+  let newGameState = game.status;
+
   // Update game status if the player has won or lost
   if (guessResult === "+".repeat(game.word.length)) {
-    await prisma.game.update({
-      where: {
-        id: gameId,
-      },
-      data: {
-        status: "won",
-      },
-    });
-  } else if (game.numberOfGuesses === game.guesses.length + 1) {
-    await prisma.game.update({
-      where: {
-        id: gameId,
-      },
-      data: {
-        status: "lost",
-      },
-    });
+    newGameState = "won";
+  } else if (game.numberOfGuesses === currentNumberOfGuesses) {
+    newGameState = "lost";
   }
+
+  await prisma.game.update({
+    where: {
+      id: gameId,
+    },
+    data: {
+      status: newGameState,
+    },
+  });
 
   const guessResponse: GuessResponse = {
     guessId: guess.id,
-    currentTry: game.guesses.length,
+    currentTry: currentNumberOfGuesses,
     maxTries: game.numberOfGuesses,
     username: game.username,
     yourGuess: guess.guess,
     guessResult: guess.guessResult,
-    gameStatus: game.status as GameStatus,
+    gameStatus: newGameState as GameStatus,
   };
 
   return guessResponse;

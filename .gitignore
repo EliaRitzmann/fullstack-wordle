@@ -1,2 +1,6 @@
 node_modules
-.env.local
+.env
+
+apps/backend/prisma/dev.db
+apps/backend/prisma/dev.db-journal
+apps/backend/coverage/
