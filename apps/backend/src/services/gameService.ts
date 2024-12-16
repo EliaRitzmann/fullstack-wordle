@@ -149,7 +149,6 @@ export const makeGuess = async (
     username: game.username,
     yourGuess: guess.guess,
     guessResult: guess.guessResult,
-    gameStatus: newGameState as GameStatus,
   };
 
   return guessResponse;

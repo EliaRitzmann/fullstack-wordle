@@ -15,7 +15,6 @@ export type GuessResponse = {
   username: string;
   yourGuess: string;
   guessResult: string; // A string like "CXX", indicating feedback for each letter
-  gameStatus?: GameStatus;
 };
 
 export type GameStatus = "active" | "won" | "lost";
