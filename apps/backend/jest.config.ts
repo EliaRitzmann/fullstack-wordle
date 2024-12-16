@@ -21,6 +21,7 @@ const config: Config = {
   preset: "ts-jest",
   testEnvironment: "node",
   testMatch: ["**/tests/**/*.test.ts"],
+  setupFilesAfterEnv: ["<rootDir>/tests/setup.ts"],
   clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
