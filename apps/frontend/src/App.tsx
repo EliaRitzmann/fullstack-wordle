@@ -1,11 +1,10 @@
 import "./App.css";
+import Grid from "./components/grid.tsx";
 
-function App() {
+export default function App() {
   return (
-    <>
-      <h1>Hello, Wordle frontend!</h1>
-    </>
+    <div className=" mx-[390px] flex items-center justify-center h-screen bg-background-black">
+      <Grid />
+    </div>
   );
 }
-
-export default App;
