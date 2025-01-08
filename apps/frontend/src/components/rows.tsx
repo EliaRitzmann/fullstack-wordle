@@ -11,7 +11,7 @@ export default function Row({ word, targetWord }: {word: string, targetWord:stri
     if (targetWord.includes(letter)) {
       return "bg-almost-yellow border-almost-yellow";
     }
-    return "bg-background-black border-wrong-gray"
+    return "border-wrong-gray"
   }
 
     return (
