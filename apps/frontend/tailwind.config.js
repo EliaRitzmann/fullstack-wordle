@@ -9,6 +9,7 @@ module.exports = {
         "correct-green": '#538d4e',
         "almost-yellow": "#B59F3B",
         "wrong-gray": "#3A3A3C",
+        "light-gray": "#818384",
         "background-black": "#121213",
       },
     },
