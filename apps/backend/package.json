@@ -7,7 +7,7 @@
     "start": "node dist/server.js",
     "test": "jest",
     "migrate": "npx prisma migrate dev",
-    "script:populateWords": "npx ts-node scripts/populateWords.ts"
+    "script:populateWords": "node dist/scripts/populateWords.js"
   },
   "keywords": [],
   "author": "",

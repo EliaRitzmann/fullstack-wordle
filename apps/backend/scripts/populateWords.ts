@@ -23,12 +23,8 @@ async function populateWords() {
 
   try {
     for (const languageCode of languages) {
-      const filePath = path.join(
-        __dirname,
-        "..",
-        "data",
-        `wordlist.${languageCode}.txt`
-      );
+      const filePath = path.resolve(__dirname, "../../data", `wordlist.${languageCode}.txt`);
+
 
       if (fs.existsSync(filePath)) {
         console.log(`Processing words for language: ${languageCode}`);
@@ -45,7 +41,7 @@ async function populateWords() {
           .createMany({
             data: wordData,
           })
-          .catch((error) => {
+          .catch((error: any) => {
             console.error(
               `Error populating words for language: ${languageCode}`,
               error
