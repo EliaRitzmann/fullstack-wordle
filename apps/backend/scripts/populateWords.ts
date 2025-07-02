@@ -23,7 +23,7 @@ async function populateWords() {
 
   try {
     for (const languageCode of languages) {
-      const filePath = path.resolve(__dirname, "../../data", `wordlist.${languageCode}.txt`);
+      const filePath = path.resolve(__dirname, "../../data", `wordList.${languageCode}.txt`);
 
 
       if (fs.existsSync(filePath)) {
