@@ -10,8 +10,11 @@
     "generate:api": "npx @openapitools/openapi-generator-cli generate -i http://localhost:3000/openapi.json -g typescript-axios -o src/api/generated"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.11",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.6.3",
+    "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
