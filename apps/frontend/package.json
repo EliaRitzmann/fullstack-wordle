@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate:api": "npx @openapitools/openapi-generator-cli generate -i http://localhost:3000/openapi.json -g typescript-axios -o src/api/generated"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -14,6 +15,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
+    "@openapitools/openapi-generator-cli": "^2.21.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",

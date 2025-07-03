@@ -41,7 +41,12 @@ This setup uses `docker-compose.dev.yml` for local development with hot-reloadin
 3.  **Start Services:**
     From the project root (`fullstack-wordle/`), start the Docker services:
     ```bash
+    # first time
     docker compose -f docker-compose.dev.yml up --build
+
+    # run in background
+    docker-compose -f docker-compose.dev.yml up -d
+
     ```
     The backend will be available at `http://localhost:3000`.
 

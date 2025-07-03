@@ -15,6 +15,7 @@ app.use(express.json());
 if (process.env.NODE_ENV === "development") {
   // @ts-ignore
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.get("/openapi.json", (req, res) => res.json(swaggerSpec));
 }
 
 // Routes
