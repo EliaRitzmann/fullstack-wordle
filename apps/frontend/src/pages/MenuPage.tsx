@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { api } from "../api/client";
 import { useActiveGames } from "../hook/useActiveGames";
+import wordleLogoGIF from "../assets/Wordle.gif";
 
 const MenuPage = () => {
   const [username, setUsername] = useState("");
@@ -8,17 +9,27 @@ const MenuPage = () => {
   const [difficulty, setDifficulty] = useState("easy");
   const { joinGame } = useActiveGames();
 
+  const mapDifficultyToNumberOfTries = (difficulty: string): number => {
+    switch (difficulty) {
+      case "easy":
+        return 6;
+      case "medium":
+        return 5;
+      case "hard":
+        return 4;
+      default:
+        console.error("Invalid difficulty level:", difficulty);
+        return 6;
+    }
+  };
+
   const handleJoin = () => {
-    console.log(
-      "Joining game with username:",
-      username,
-      "word length:",
-      wordLength,
-      "difficulty:",
-      difficulty
-    );
     api
-      .gameStartPost(username, 6, wordLength)
+      .gameStartPost(
+        username,
+        mapDifficultyToNumberOfTries(difficulty),
+        wordLength
+      )
       .then((response) => {
         const gameId = response.data.gameId;
         if (!gameId) {
@@ -36,9 +47,10 @@ const MenuPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200 p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-base-200 p-4 gap-12">
+      <img src={wordleLogoGIF} alt="Logo" className="w-3xl h-auto" />
       <div className="card w-full max-w-md shadow-xl bg-base-100 p-6">
-        <h2 className="text-2xl font-bold mb-6 text-center">Game Setup</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">New Game</h2>
 
         <label className="label">
           <span className="label-text">Username</span>
@@ -46,6 +58,7 @@ const MenuPage = () => {
         <input
           type="text"
           placeholder="Enter your username"
+          autoFocus
           className="input input-bordered w-full mb-4"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -54,14 +67,43 @@ const MenuPage = () => {
         <label className="label">
           <span className="label-text">Word Length</span>
         </label>
-        <input
-          type="number"
-          min={3}
-          max={10}
-          className="input input-bordered w-full mb-4"
-          value={wordLength}
-          onChange={(e) => setWordLength(Number(e.target.value))}
-        />
+        <div className="w-ful mb-4">
+          <input
+            type="range"
+            min={4}
+            max={14}
+            value={wordLength}
+            onChange={(e) => setWordLength(Number(e.target.value))}
+            className="range w-full"
+            step="1"
+          />
+          <div className="flex justify-between px-2.5 mt-2 text-xs">
+            <span className="w-2">|</span>
+            <span className="w-2">|</span>
+            <span className="w-2">|</span>
+            <span className="w-2">|</span>
+            <span className="w-2">|</span>
+            <span className="w-2">|</span>
+            <span className="w-2">|</span>
+            <span className="w-2">|</span>
+            <span className="w-2">|</span>
+            <span className="w-2">|</span>
+            <span className="w-2">|</span>
+          </div>
+          <div className="flex justify-between px-1.5 mt-2 mr-2 text-xs">
+            <span className="w-2">4</span>
+            <span className="w-2">5</span>
+            <span className="w-2">6</span>
+            <span className="w-2">7</span>
+            <span className="w-2">8</span>
+            <span className="w-2">9</span>
+            <span className="w-2">10</span>
+            <span className="w-2">11</span>
+            <span className="w-2">12</span>
+            <span className="w-2">13</span>
+            <span className="w-2">14</span>
+          </div>
+        </div>
 
         <label className="label">
           <span className="label-text">Difficulty</span>
@@ -81,7 +123,7 @@ const MenuPage = () => {
           disabled={!username.trim()}
           onClick={handleJoin}
         >
-          Join
+          Start
         </button>
       </div>
     </div>

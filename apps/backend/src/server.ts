@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import gameController from "./controllers/gameController";
 import leaderboardController from "./controllers/leaderboardController";
 import { connectToDatabase } from "./config/database";
@@ -10,6 +11,12 @@ import { swaggerSpec } from "./config/swagger.config";
 export const app = express();
 
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 
 // Swagger
 if (process.env.NODE_ENV === "development") {

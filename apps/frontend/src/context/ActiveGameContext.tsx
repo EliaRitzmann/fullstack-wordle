@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect } from 'react';
 type ActiveGamesContextType = {
   activeGames: string[];
   joinGame: (uuid: string) => void;
-  leaveGame: (uuid: string) => void;
+  removeGameUUID: (uuid: string) => void;
 };
 
 const ActiveGamesContext = createContext<ActiveGamesContextType | undefined>(undefined);
@@ -22,12 +22,12 @@ const ActiveGamesProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setActiveGames(prev => (prev.includes(uuid) ? prev : [...prev, uuid]));
   };
 
-  const leaveGame = (uuid: string) => {
+  const removeGameUUID = (uuid: string) => {
     setActiveGames(prev => prev.filter(id => id !== uuid));
   };
 
   return (
-    <ActiveGamesContext.Provider value={{ activeGames, joinGame, leaveGame }}>
+    <ActiveGamesContext.Provider value={{ activeGames, joinGame, removeGameUUID }}>
       {children}
     </ActiveGamesContext.Provider>
   );
