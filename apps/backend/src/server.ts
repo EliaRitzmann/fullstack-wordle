@@ -12,8 +12,10 @@ export const app = express();
 app.use(express.json());
 
 // Swagger
-// @ts-ignore
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+if (process.env.NODE_ENV === "development") {
+  // @ts-ignore
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
 
 // Routes
 app.use("/game", gameController);
