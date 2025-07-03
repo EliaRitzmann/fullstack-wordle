@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    working_dir: /app
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/mydb
+      NODE_ENV: development
+    command: sh -c "npx prisma migrate dev --name init && npm run script:populateWords:dev && npm run dev"
+volumes:
+  pgdata:

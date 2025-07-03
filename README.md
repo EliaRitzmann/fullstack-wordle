@@ -1,73 +1,104 @@
-# Fullstack Wordle game
+# FULLSTACK-WORDLE
 
-This repository contains the code for a fullstack Wordle game. It is an React.js application with an Express.js backend & SQLite Database.
+A Dockerized full-stack Wordle application with a Node.js/Express backend and PostgreSQL database.
 
-## Tech Stack
+## Table of Contents
 
-- **Frontend:** React.js, TailwindCSS & TypeScript
-- **Backend:** Node.js with Express.js & TypeScript
-- **Database ORM:** Prisma
-- **Database:** SQLite
+-   [Getting Started](#getting-started)
+    -   [Prerequisites](#prerequisites)
+    -   [Development Setup](#development-setup)
+    -   [Production Setup](#production-setup)
+-   [Key Commands](#key-commands)
+-   [Accessing Data (Prisma Studio)](#accessing-data-prisma-studio)
+-   [API Documentation](#api-documentation)
 
 ## Getting Started
 
-To set up and run this project locally, follow those steps:
-
 ### Prerequisites
 
-Ensure you have the following tools installed on your machine:
+Ensure you have [Docker Desktop](https://www.docker.com/products/docker-desktop) installed, which includes Docker Engine and Docker Compose. You'll also need [Node.js](https://nodejs.org/en/download/) installed locally for Prisma Studio.
 
-- [Node.js](https://nodejs.org/) (v14+)
-- [npm](https://www.npmjs.com/) (or yarn)
+### Development Setup
 
-### Installation
+This setup uses `docker-compose.dev.yml` for local development with hot-reloading and `ts-node`.
 
-#### Clone the repository:
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/EliaRitzmann/fullstack-wordle](https://github.com/EliaRitzmann/fullstack-wordle)
+    cd fullstack-wordle
+    ```
 
-```bash
-   git clone https://github.com/EliaRitzmann/fullstack-wordle.git
-   cd fullstack-wordle
-```
+2.  **Configure local `.env` for Prisma Studio:**
+    Navigate to `apps/backend/` and create a `.env` file (if it doesn't exist) with the following content. This allows your local Prisma Studio to connect to the Dockerized database.
+    ```bash
+    cd apps/backend
+    cp .env.example .env # If you have one
+    # Then edit apps/backend/.env:
+    # NODE_ENV=development
+    # DATABASE_URL="postgresql://postgres:postgres@localhost:5432/mydb"
+    ```
 
-#### Install modules
+3.  **Start Services:**
+    From the project root (`fullstack-wordle/`), start the Docker services:
+    ```bash
+    docker compose -f docker-compose.dev.yml up --build
+    ```
+    The backend will be available at `http://localhost:3000`.
 
-```bash
-   npm install
-```
+### Production Setup
 
-#### Setup Backend
+This setup uses `docker-compose.yml` for a production-like environment.
 
-1. Change in to the backend directory
+1.  **Clone the repository** (if not already done).
+2.  **Configure production environment variables:**
+    Create a `.env` file at the **root of your project** (next to `docker-compose.yml`).
+    ```
+    # .env (at project root)
+    DATABASE_URL="postgresql://postgres:postgres@db:5432/mydb"
+    NODE_ENV=production
+    ```
+    *(For real production, consider more secure methods like Docker Secrets.)*
+3.  **Start Services:**
+    From the project root (`fullstack-wordle/`), start the Docker services in detached mode:
+    ```bash
+    docker compose -f docker-compose.yml up --build -d
+    ```
+    The backend will be available at `http://localhost:3000`.
 
-```bash
-   cd apps/backend
-```
+## Key Commands
 
-2. Create a new .env.local and .env.test file and copy the values from .env.example into them.
+Run these commands from the **project root** (`fullstack-wordle/`):
 
-3. Create SqlLite Database
+* **Start development services (with rebuild):**
+    ```bash
+    docker compose -f docker-compose.dev.yml up --build
+    ```
+* **Start production services (with rebuild, detached):**
+    ```bash
+    docker compose -f docker-compose.yml up --build -d
+    ```
+* **Stop all services:**
+    ```bash
+    docker compose down
+    ```
+* **Stop services and remove database data (useful for a clean start):**
+    ```bash
+    docker compose down -v
+    ```
 
-```bash
-   npx prisma migrate dev # Runs migrations to set up the database schema
-```
+## Accessing Data (Prisma Studio)
 
-4. Fill Database with a premade collection of words. 
+While your Docker services are running, you can inspect your database data using Prisma Studio:
 
-```bash
-   npm run script:populateWords # Populates the database with Wordle words
-```
+1.  **Open a new terminal** and navigate to your `apps/backend` directory.
+2.  **Run Prisma Studio:**
+    ```bash
+    npx prisma studio
+    ```
+    Prisma Studio will open in your web browser, at `http://localhost:5555`.
 
-4. Run the express application:
+## API Documentation
 
-```bash
-   npm run dev
-```
+The backend provides interactive API documentation via Swagger UI. Once the backend server is running, visit:
 
-The api is now available under [http://localhost:3000](http://localhost:3000)
-
-A documentation of all the endpoint can be found here [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
-
-#### Setup Frontend
-
-WIP
-
+`http://localhost:3000/api-docs`
