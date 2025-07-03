@@ -6,8 +6,13 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "jest",
+
     "migrate": "npx prisma migrate dev",
-    "script:populateWords": "node dist/scripts/populateWords.js"
+    "prisma:generate": "npx prisma generate",
+    "migrate:deploy": "npx prisma migrate deploy",
+
+    "script:populateWords": "node dist/scripts/populateWords.js",
+    "script:populateWords:dev": "ts-node /app/scripts/populateWords.ts"
   },
   "keywords": [],
   "author": "",
