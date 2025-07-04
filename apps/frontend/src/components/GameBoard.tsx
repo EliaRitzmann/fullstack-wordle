@@ -44,8 +44,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
       setCurrentInput((prev) => prev.slice(0, -1));
     } else if (/^[a-zA-Z]$/.test(e.key)) {
       if (
-        currentInput.length < wordLength &&
-        !usedLetters.includes(e.key.toLowerCase())
+        currentInput.length < wordLength
       ) {
         setCurrentInput((prev) => prev + e.key.toLowerCase());
       } else {
