@@ -7,6 +7,7 @@ const MenuPage = () => {
   const [username, setUsername] = useState("");
   const [wordLength, setWordLength] = useState(5);
   const [difficulty, setDifficulty] = useState("easy");
+  const [error, setError] = useState(null);
   const { joinGame } = useActiveGames();
 
   const mapDifficultyToNumberOfTries = (difficulty: string): number => {
@@ -42,7 +43,7 @@ const MenuPage = () => {
       })
       .catch((error) => {
         console.error("Error starting game:", error);
-        alert("Failed to start game. Please try again.");
+        setError(error.response?.data?.message || "Failed to start game. Please try again.");
       });
   };
 
@@ -67,7 +68,7 @@ const MenuPage = () => {
         <label className="label">
           <span className="label-text">Word Length</span>
         </label>
-        <div className="w-ful mb-4">
+        <div className="w-full mb-4">
           <input
             type="range"
             min={4}
@@ -109,7 +110,7 @@ const MenuPage = () => {
           <span className="label-text">Difficulty</span>
         </label>
         <select
-          className="select select-bordered w-full mb-6"
+          className="select select-bordered w-full mb-4"
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
         >
@@ -117,6 +118,24 @@ const MenuPage = () => {
           <option value="medium">Medium</option>
           <option value="hard">Hard</option>
         </select>
+        {error && (
+          <div role="alert" className="alert alert-error mb-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 shrink-0 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{error}</span>
+          </div>
+        )}
 
         <button
           className="btn btn-primary w-full"

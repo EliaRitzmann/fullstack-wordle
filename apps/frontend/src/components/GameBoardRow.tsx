@@ -5,6 +5,7 @@ type GameBoardRowProps = {
   letters: string[];
   wordLength: number;
   isActive?: boolean;
+  isInvalid?: boolean;
 };
 
 const GameBoardRow = ({
@@ -12,6 +13,7 @@ const GameBoardRow = ({
   letters,
   wordLength,
   isActive,
+  isInvalid = false,
 }: GameBoardRowProps) => {
   const cells = Array.from({ length: wordLength }).map((_, i) => {
     const char = letters[i] || "";
@@ -25,7 +27,7 @@ const GameBoardRow = ({
     return (
       <div
         key={i}
-        className={`w-12 h-12 border border-gray-400 flex items-center justify-center text-xl font-bold uppercase ${bg}`}
+        className={`w-12 h-12 border border-gray-400 flex items-center justify-center text-xl font-bold uppercase ${bg} ${isInvalid ? "animate-jiggle" : ""}`}
       >
         {char}
       </div>

@@ -1,23 +1,15 @@
 import React from "react";
 
 type KeyboardProps = {
-  words: string[];
+  usedLetters: string[];
 };
 
-const Keyboard = ({ words } : KeyboardProps) => {
+const Keyboard = ({ usedLetters } : KeyboardProps) => {
   const rows = [
     ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
     ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
     ["z", "x", "c", "v", "b", "n", "m"]
   ];
-
-  // Collect all letters from the words
-  const usedLetters = new Set(
-    words
-      .join("")
-      .toLowerCase()
-      .split("")
-  );
 
   return (
     <div>
@@ -27,8 +19,8 @@ const Keyboard = ({ words } : KeyboardProps) => {
           className="my-1 flex w-full justify-center gap-1"
         >
           {row.map((letter) => {
-            const isUsed = usedLetters.has(letter);
-            const baseClass = "kbd kbd-xl";
+            const isUsed = usedLetters.includes(letter);
+            const baseClass = "kbd font-semibold uppercase w-14 h-14 text-3xl";
             const colorClass = isUsed ? "bg-gray-800 text-white" : "";
 
             return (

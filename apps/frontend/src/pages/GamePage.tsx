@@ -12,7 +12,6 @@ const GamePage = () => {
   const { removeGameUUID } = useActiveGames();
   const { metadata, error } = useGameMetadata(uuid);
   const navigate = useNavigate();
-  console.log("Game data:", metadata);
 
   const leaveGame = (gameUUID: string | undefined) => {
     if (gameUUID) {
@@ -46,21 +45,26 @@ const GamePage = () => {
             wordLength={metadata?.wordLength || 5}
             maxGuesses={metadata?.maxNumberOfGuesses || 4}
             guesses={metadata?.guesses || []}
-            onConfirm={(guess) => {
-              if (uuid) {
-                api
-                  .gameGuessPost(uuid, guess)
-                  .then(() => {
-                    window.location.reload();
-                  })
-                  .catch((err) => {
-                    console.error("Error submitting guess:", err);
-                  });
+            onConfirm={async (guess) => {
+              if (!uuid) return;
+
+              try {
+                await api.gameGuessPost(uuid, guess);
+                window.location.reload();
+              } catch (err) {
+                console.error("Error submitting guess:", err);
+                throw err;
               }
             }}
           />
           <Keyboard
-            words={metadata?.guesses?.map((g) => g.yourGuess as string) || []}
+            usedLetters={
+              metadata?.guesses
+                ?.map((g) => g.yourGuess)
+                .join("")
+                .toLowerCase()
+                .split("") || []
+            }
           />
         </div>
       ) : (
