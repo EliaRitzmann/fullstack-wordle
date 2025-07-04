@@ -6,6 +6,7 @@ import Keyboard from "../components/Keyboard";
 import GameBoard from "../components/GameBoard";
 import { api } from "../api/client";
 import wordleLogoImg from "../assets/Wordle.png";
+import { GameGameIdGet200Response } from "../api/generated";
 
 const GamePage = () => {
   const { uuid } = useParams();
@@ -18,6 +19,18 @@ const GamePage = () => {
       removeGameUUID(gameUUID);
     }
     navigate("/");
+  };
+
+  const getUsedLettersFromMetadata = (data: GameGameIdGet200Response) => {
+    if (!data.guesses) {
+      return [];
+    }
+
+    return data.guesses
+      .map((g) => g.yourGuess)
+      .join("")
+      .toLowerCase()
+      .split("");
   };
 
   return (
@@ -41,31 +54,28 @@ const GamePage = () => {
       </div>
       {!error ? (
         <div>
-          <GameBoard
-            wordLength={metadata?.wordLength || 5}
-            maxGuesses={metadata?.maxNumberOfGuesses || 4}
-            guesses={metadata?.guesses || []}
-            onConfirm={async (guess) => {
-              if (!uuid) return;
+          {metadata && (
+            <div>
+              <GameBoard
+                wordLength={metadata?.wordLength || 5}
+                maxGuesses={metadata?.maxNumberOfGuesses || 4}
+                guesses={metadata?.guesses || []}
+                usedLetters={getUsedLettersFromMetadata(metadata)}
+                onConfirm={async (guess) => {
+                  if (!uuid) return;
 
-              try {
-                await api.gameGuessPost(uuid, guess);
-                refetchGameMetadata(uuid);
-              } catch (err) {
-                console.error("Error submitting guess:", err);
-                throw err;
-              }
-            }}
-          />
-          <Keyboard
-            usedLetters={
-              metadata?.guesses
-                ?.map((g) => g.yourGuess)
-                .join("")
-                .toLowerCase()
-                .split("") || []
-            }
-          />
+                  try {
+                    await api.gameGuessPost(uuid, guess);
+                    refetchGameMetadata(uuid);
+                  } catch (err) {
+                    console.error("Error submitting guess:", err);
+                    throw err;
+                  }
+                }}
+              />
+              <Keyboard usedLetters={getUsedLettersFromMetadata(metadata)} />
+            </div>
+          )}
         </div>
       ) : (
         <div className="flex justify-center items-center h-screen">

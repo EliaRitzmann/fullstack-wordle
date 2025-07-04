@@ -7,6 +7,7 @@ type GameBoardProps = {
   maxGuesses: number;
   guesses: GameGameIdGet200ResponseGuessesInner[];
   onConfirm: (guess: string) => void;
+  usedLetters: string[];
 };
 
 const GameBoard: React.FC<GameBoardProps> = ({
@@ -14,6 +15,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
   maxGuesses,
   guesses,
   onConfirm,
+  usedLetters,
 }) => {
   const [currentInput, setCurrentInput] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
@@ -32,23 +34,31 @@ const GameBoard: React.FC<GameBoardProps> = ({
     return () => clearInterval(interval);
   }, []);
 
+  const handleInvalid = () => {
+    setIsInvalid(true);
+    setTimeout(() => setIsInvalid(false), 200); // match animation duration
+  };
+
   const handleKey = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Backspace") {
       setCurrentInput((prev) => prev.slice(0, -1));
     } else if (/^[a-zA-Z]$/.test(e.key)) {
-      if (currentInput.length < wordLength) {
+      if (
+        currentInput.length < wordLength &&
+        !usedLetters.includes(e.key.toLowerCase())
+      ) {
         setCurrentInput((prev) => prev + e.key.toLowerCase());
+      } else {
+        handleInvalid();
       }
     } else if (e.key === "Enter") {
       if (currentInput.length !== wordLength) return;
       try {
         await onConfirm(currentInput);
         setCurrentInput("");
-      } catch (err) {
-        console.error("Invalid guess", err);
-        setIsInvalid(true);
-        // Remove jiggle class after animation
-        setTimeout(() => setIsInvalid(false), 200); // match animation duration
+      } catch (error) {
+        console.error("Error confirming guess:", error);
+        handleInvalid();
       }
     }
   };

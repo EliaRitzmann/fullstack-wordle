@@ -27,7 +27,7 @@ const GameBoardRow = ({
     return (
       <div
         key={i}
-        className={`w-12 h-12 border border-gray-400 flex items-center justify-center text-xl font-bold uppercase ${bg} ${isInvalid ? "animate-jiggle" : ""}`}
+        className={`w-18 h-18 border border-gray-400 flex items-center justify-center text-2xl font-bold uppercase ${bg} ${isInvalid ? "animate-jiggle" : ""}`}
       >
         {char}
       </div>
