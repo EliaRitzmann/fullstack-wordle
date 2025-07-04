@@ -14,8 +14,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
   wordLength,
   maxGuesses,
   guesses,
-  onConfirm,
-  usedLetters,
+  onConfirm
 }) => {
   const [currentInput, setCurrentInput] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
