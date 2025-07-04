@@ -24,5 +24,13 @@ services:
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/mydb
     command: sh -c "npx prisma migrate dev --name init && npm run script:populateWords && node dist/src/server.js"
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
 volumes:
   pgdata:

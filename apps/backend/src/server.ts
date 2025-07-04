@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import gameController from "./controllers/gameController";
 import leaderboardController from "./controllers/leaderboardController";
 import { connectToDatabase } from "./config/database";
@@ -11,10 +12,17 @@ export const app = express();
 
 app.use(express.json());
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
+
 // Swagger
 if (process.env.NODE_ENV === "development") {
   // @ts-ignore
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.get("/openapi.json", (req, res) => res.json(swaggerSpec));
 }
 
 // Routes

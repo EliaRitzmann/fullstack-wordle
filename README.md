@@ -1,6 +1,6 @@
 # FULLSTACK-WORDLE
 
-A Dockerized full-stack Wordle application with a Node.js/Express backend and PostgreSQL database.
+A Dockerized full-stack Wordle application with a Node.js/Express backend, PostgreSQL database and React.js frontend. 
 
 ## Table of Contents
 
@@ -41,9 +41,14 @@ This setup uses `docker-compose.dev.yml` for local development with hot-reloadin
 3.  **Start Services:**
     From the project root (`fullstack-wordle/`), start the Docker services:
     ```bash
+    # first time
     docker compose -f docker-compose.dev.yml up --build
+
+    # run in background
+    docker-compose -f docker-compose.dev.yml up -d
+
     ```
-    The backend will be available at `http://localhost:3000`.
+    The frontand will be available at `http://localhost:5173`.
 
 ### Production Setup
 
@@ -63,7 +68,6 @@ This setup uses `docker-compose.yml` for a production-like environment.
     ```bash
     docker compose -f docker-compose.yml up --build -d
     ```
-    The backend will be available at `http://localhost:3000`.
 
 ## Key Commands
 
@@ -84,6 +88,10 @@ Run these commands from the **project root** (`fullstack-wordle/`):
 * **Stop services and remove database data (useful for a clean start):**
     ```bash
     docker compose down -v
+    ```
+* **Generate api client:**
+    ```bash
+    npm run generate:api
     ```
 
 ## Accessing Data (Prisma Studio)
