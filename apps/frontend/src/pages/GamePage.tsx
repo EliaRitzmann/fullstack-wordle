@@ -10,7 +10,7 @@ import wordleLogoImg from "../assets/Wordle.png";
 const GamePage = () => {
   const { uuid } = useParams();
   const { removeGameUUID } = useActiveGames();
-  const { metadata, error } = useGameMetadata(uuid);
+  const { metadata, error, refetchGameMetadata } = useGameMetadata(uuid);
   const navigate = useNavigate();
 
   const leaveGame = (gameUUID: string | undefined) => {
@@ -50,7 +50,7 @@ const GamePage = () => {
 
               try {
                 await api.gameGuessPost(uuid, guess);
-                window.location.reload();
+                refetchGameMetadata(uuid);
               } catch (err) {
                 console.error("Error submitting guess:", err);
                 throw err;

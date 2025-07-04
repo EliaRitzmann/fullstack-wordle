@@ -8,15 +8,9 @@ export const useGameMetadata = (uuid: string | undefined) => {
   );
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    if (!uuid) {
-      setMetadata(null);
-      setError(new Error("Missing UUID"));
-      return;
-    }
-
+  const fetchGameMetadata = async (gameUUID: string) => {
     api
-      .gameGameIdGet(uuid)
+      .gameGameIdGet(gameUUID)
       .then((res) => {
         setMetadata(res.data);
         setError(null); // clear any previous error
@@ -26,7 +20,16 @@ export const useGameMetadata = (uuid: string | undefined) => {
         setMetadata(null);
         setError(err); // capture the error
       });
+  };
+
+  useEffect(() => {
+    if (!uuid) {
+      setMetadata(null);
+      setError(new Error("Missing UUID"));
+      return;
+    }
+    fetchGameMetadata(uuid);
   }, [uuid]);
 
-  return { metadata, error };
+  return { metadata, error, refetchGameMetadata: fetchGameMetadata };
 };
