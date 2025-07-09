@@ -14,6 +14,8 @@ model Game {
   numberOfGuesses Int
   guesses         Guess[]
   status          String  @default("ACTIVE") // 'ACTIVE' | 'WON' | 'LOST'
+  startedAt       DateTime @default(now())
+  endetAt      DateTime?
 }
 
 model Guess {

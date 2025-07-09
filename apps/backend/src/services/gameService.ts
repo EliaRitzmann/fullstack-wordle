@@ -26,6 +26,8 @@ export const startGame = async (
     maxNumberOfGuesses: game.numberOfGuesses,
     wordLength: game.word.length,
     status: game.status as GameStatus,
+    startedAt: game.startedAt,
+    endedAt: undefined,
     guesses: [],
   };
 
@@ -57,6 +59,8 @@ export const getGame = async (gameId: string): Promise<GameResponse> => {
     wordLength: game.word.length,
     status: game.status as GameStatus,
     correctWord: correctWordResponse,
+    startedAt: game.startedAt,
+    endedAt: game.endetAt || undefined,
     guesses: game.guesses.map(
       (guess: Guess) =>
         ({
@@ -125,12 +129,15 @@ export const makeGuess = async (
   });
 
   let newGameState = game.status;
+  let endedAt: Date | null = null;
 
   // Update game status if the player has won or lost
   if (guessResult === "+".repeat(game.word.length)) {
     newGameState = "won";
+    endedAt = new Date();
   } else if (game.numberOfGuesses === currentNumberOfGuesses) {
     newGameState = "lost";
+    endedAt = new Date();
   }
 
   await prisma.game.update({
@@ -139,6 +146,7 @@ export const makeGuess = async (
     },
     data: {
       status: newGameState,
+      endetAt: endedAt,
     },
   });
 

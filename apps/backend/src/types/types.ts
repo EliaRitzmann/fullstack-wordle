@@ -5,6 +5,8 @@ export type GameResponse = {
   wordLength: number;
   status: GameStatus;
   guesses: GuessResponse[];
+  startedAt: Date;
+  endedAt?: Date; // Only present if game is won or lost
   correctWord?: string; // Only present if game is won or lost
 };
 
