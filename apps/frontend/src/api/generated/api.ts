@@ -66,6 +66,18 @@ export interface GameGameIdGet200Response {
      */
     'correctWord'?: string;
     /**
+     * The date and time when the game started.
+     * @type {string}
+     * @memberof GameGameIdGet200Response
+     */
+    'startedAt'?: string;
+    /**
+     * The timestamp when the game ended (only present if the game is won or lost).
+     * @type {string}
+     * @memberof GameGameIdGet200Response
+     */
+    'endedAt'?: string;
+    /**
      * List of guesses made by the player.
      * @type {Array<GameGameIdGet200ResponseGuessesInner>}
      * @memberof GameGameIdGet200Response
@@ -200,17 +212,17 @@ export interface GameStartPost200Response {
      */
     'status'?: GameStartPost200ResponseStatusEnum;
     /**
-     * List of guesses made by the player.
-     * @type {Array<GameStartPost200ResponseGuessesInner>}
-     * @memberof GameStartPost200Response
-     */
-    'guesses'?: Array<GameStartPost200ResponseGuessesInner>;
-    /**
      * The correct word for the game (only present if the game is won or lost).
      * @type {string}
      * @memberof GameStartPost200Response
      */
     'correctWord'?: string;
+    /**
+     * The date and time when the game started.
+     * @type {string}
+     * @memberof GameStartPost200Response
+     */
+    'startedAt'?: string;
 }
 
 export const GameStartPost200ResponseStatusEnum = {
@@ -221,31 +233,6 @@ export const GameStartPost200ResponseStatusEnum = {
 
 export type GameStartPost200ResponseStatusEnum = typeof GameStartPost200ResponseStatusEnum[keyof typeof GameStartPost200ResponseStatusEnum];
 
-/**
- * 
- * @export
- * @interface GameStartPost200ResponseGuessesInner
- */
-export interface GameStartPost200ResponseGuessesInner {
-    /**
-     * The unique ID of the guess.
-     * @type {string}
-     * @memberof GameStartPost200ResponseGuessesInner
-     */
-    'guessId'?: string;
-    /**
-     * The guessed word.
-     * @type {string}
-     * @memberof GameStartPost200ResponseGuessesInner
-     */
-    'guessWord'?: string;
-    /**
-     * Feedback for the guess.
-     * @type {string}
-     * @memberof GameStartPost200ResponseGuessesInner
-     */
-    'feedback'?: string;
-}
 /**
  * 
  * @export

@@ -7,6 +7,7 @@ import GameBoard from "../components/GameBoard";
 import { api } from "../api/client";
 import wordleLogoImg from "../assets/Wordle.png";
 import { GameGameIdGet200Response } from "../api/generated";
+import Timer from "../components/Timer";
 
 const GamePage = () => {
   const { uuid } = useParams();
@@ -56,6 +57,15 @@ const GamePage = () => {
         <div>
           {metadata && (
             <div>
+              {metadata.startedAt && (
+                <Timer
+                  startingTime={new Date(metadata.startedAt)}
+                  endingTime={
+                    metadata.endedAt ? new Date(metadata.endedAt) : undefined
+                  }
+                ></Timer>
+              )}
+
               <GameBoard
                 wordLength={metadata?.wordLength || 5}
                 maxGuesses={metadata?.maxNumberOfGuesses || 4}

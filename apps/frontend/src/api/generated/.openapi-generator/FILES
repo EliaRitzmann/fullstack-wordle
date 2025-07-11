@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 base.ts
 common.ts
@@ -12,7 +11,6 @@ docs/GameGameIdGet400Response.md
 docs/GameGameIdGet404Response.md
 docs/GameGuessPost404Response.md
 docs/GameStartPost200Response.md
-docs/GameStartPost200ResponseGuessesInner.md
 docs/GameStartPost400Response.md
 git_push.sh
 index.ts

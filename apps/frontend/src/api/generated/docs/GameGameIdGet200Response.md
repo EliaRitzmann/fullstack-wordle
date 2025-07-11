@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **wordLength** | **number** | The length of the word to guess. | [optional] [default to undefined]
 **status** | **string** | The current status of the game. | [optional] [default to undefined]
 **correctWord** | **string** | The correct word for the game (only present if the game is won or lost). | [optional] [default to undefined]
+**startedAt** | **string** | The date and time when the game started. | [optional] [default to undefined]
+**endedAt** | **string** | The timestamp when the game ended (only present if the game is won or lost). | [optional] [default to undefined]
 **guesses** | [**Array&lt;GameGameIdGet200ResponseGuessesInner&gt;**](GameGameIdGet200ResponseGuessesInner.md) | List of guesses made by the player. | [optional] [default to undefined]
 
 ## Example
@@ -25,6 +27,8 @@ const instance: GameGameIdGet200Response = {
     wordLength,
     status,
     correctWord,
+    startedAt,
+    endedAt,
     guesses,
 };
 ```
