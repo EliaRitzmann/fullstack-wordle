@@ -69,28 +69,15 @@ const router = express.Router();
  *                     - "WON"
  *                     - "LOST"
  *                   example: "ACTIVE"
- *                 guesses:
- *                   type: array
- *                   description: List of guesses made by the player.
- *                   items:
- *                     type: object
- *                     properties:
- *                       guessId:
- *                         type: string
- *                         description: The unique ID of the guess.
- *                         example: "550e8400-e29b-41d4-a716-446655440012"
- *                       guessWord:
- *                         type: string
- *                         description: The guessed word.
- *                         example: "apple"
- *                       feedback:
- *                         type: string
- *                         description: Feedback for the guess.
- *                         example: "--++-*"
  *                 correctWord:
  *                   type: string
  *                   description: The correct word for the game (only present if the game is won or lost).
  *                   example: "apple"
+ *                 startedAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: The date and time when the game started.
+ *                   example: "2023-10-01T12:00:00Z"
  *       400:
  *         description: Bad request due to invalid input.
  *         content:
@@ -180,6 +167,16 @@ router.post(
  *                   type: string
  *                   description: The correct word for the game (only present if the game is won or lost).
  *                   example: "apple"
+ *                 startedAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: The date and time when the game started.
+ *                   example: "2023-10-01T12:00:00Z"
+ *                 endedAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: The timestamp when the game ended (only present if the game is won or lost).
+ *                   example: "2025-07-11T14:45:00Z"
  *                 guesses:
  *                   type: array
  *                   description: List of guesses made by the player.
