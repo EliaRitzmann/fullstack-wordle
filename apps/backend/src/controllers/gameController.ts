@@ -65,9 +65,9 @@ const router = express.Router();
  *                   type: string
  *                   description: The current status of the game.
  *                   enum:
- *                     - "ACTIVE"
- *                     - "WON"
- *                     - "LOST"
+ *                     - "active"
+ *                     - "won"
+ *                     - "lost"
  *                   example: "ACTIVE"
  *                 correctWord:
  *                   type: string
@@ -159,9 +159,9 @@ router.post(
  *                   type: string
  *                   description: The current status of the game.
  *                   enum:
- *                     - "ACTIVE"
- *                     - "WON"
- *                     - "LOST"
+ *                     - "active"
+ *                     - "won"
+ *                     - "lost"
  *                   example: "ACTIVE"
  *                 correctWord:
  *                   type: string

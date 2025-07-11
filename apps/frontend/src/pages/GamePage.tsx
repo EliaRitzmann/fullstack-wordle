@@ -6,8 +6,12 @@ import Keyboard from "../components/Keyboard";
 import GameBoard from "../components/GameBoard";
 import { api } from "../api/client";
 import wordleLogoImg from "../assets/Wordle.png";
-import { GameGameIdGet200Response } from "../api/generated";
+import {
+  GameGameIdGet200Response,
+  GameGameIdGet200ResponseStatusEnum,
+} from "../api/generated";
 import Timer from "../components/Timer";
+import { WonLostDisplay } from "../components/WonLostDisplay";
 
 const GamePage = () => {
   const { uuid } = useParams();
@@ -38,6 +42,14 @@ const GamePage = () => {
     <div>
       <div className="navbar bg-base-100 shadow-sm flex justify-between">
         <img src={wordleLogoImg} alt="Wordle Logo" className="w-46 h-auto" />
+        {metadata && metadata.startedAt && (
+          <Timer
+            startingTime={new Date(metadata.startedAt)}
+            endingTime={
+              metadata.endedAt ? new Date(metadata.endedAt) : undefined
+            }
+          />
+        )}
         <div className="flex justify-end gap-2">
           {!error && (
             <p className="text-lg font-semibold">
@@ -57,13 +69,14 @@ const GamePage = () => {
         <div>
           {metadata && (
             <div>
-              {metadata.startedAt && (
-                <Timer
-                  startingTime={new Date(metadata.startedAt)}
-                  endingTime={
-                    metadata.endedAt ? new Date(metadata.endedAt) : undefined
-                  }
-                ></Timer>
+              {metadata.status !==
+                GameGameIdGet200ResponseStatusEnum.Active && (
+                <WonLostDisplay
+                  state={metadata.status as GameGameIdGet200ResponseStatusEnum}
+                  correctWord={metadata.correctWord}
+                  startedAt={new Date(metadata.startedAt || Date.now())}
+                  endedAt={new Date(metadata.endedAt || Date.now())}
+                />
               )}
 
               <GameBoard

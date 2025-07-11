@@ -86,9 +86,9 @@ export interface GameGameIdGet200Response {
 }
 
 export const GameGameIdGet200ResponseStatusEnum = {
-    Active: 'ACTIVE',
-    Won: 'WON',
-    Lost: 'LOST'
+    Active: 'active',
+    Won: 'won',
+    Lost: 'lost'
 } as const;
 
 export type GameGameIdGet200ResponseStatusEnum = typeof GameGameIdGet200ResponseStatusEnum[keyof typeof GameGameIdGet200ResponseStatusEnum];
@@ -226,9 +226,9 @@ export interface GameStartPost200Response {
 }
 
 export const GameStartPost200ResponseStatusEnum = {
-    Active: 'ACTIVE',
-    Won: 'WON',
-    Lost: 'LOST'
+    Active: 'active',
+    Won: 'won',
+    Lost: 'lost'
 } as const;
 
 export type GameStartPost200ResponseStatusEnum = typeof GameStartPost200ResponseStatusEnum[keyof typeof GameStartPost200ResponseStatusEnum];
