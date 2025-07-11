@@ -15,6 +15,8 @@ const router = express.Router();
  *   post:
  *     summary: Start a new game
  *     description: Start a new game with the given username, maximum number of guesses, and word length.
+ *     tags:
+ *       - Game
  *     parameters:
  *       - in: query
  *         name: username
@@ -122,6 +124,8 @@ router.post(
  *   get:
  *     summary: Retrieve game details
  *     description: Fetch the details of a specific game using its unique gameId.
+ *     tags:
+ *       - Game
  *     parameters:
  *       - in: path
  *         name: gameId
@@ -254,6 +258,8 @@ router.get(
  *   post:
  *     summary: Submit a word guess for a game
  *     description: Make a guess for the word in a specific game. The gameId and the wordGuess must be provided.
+ *     tags:
+ *       - Game
  *     parameters:
  *       - in: query
  *         name: gameId

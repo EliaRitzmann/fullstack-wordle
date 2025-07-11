@@ -19,4 +19,17 @@ export type GuessResponse = {
   guessResult: string; // A string like "CXX", indicating feedback for each letter
 };
 
+export type leaderboardEntry = {
+  username: string;
+  startedAt: Date;
+  endedAt: Date;
+  maxNumberOfGuesses: number;
+  word: string;
+  durationSeconds?: number;
+};
+
+export type leaderboard = {
+  entries: leaderboardEntry[];
+}
+
 export type GameStatus = "active" | "won" | "lost";

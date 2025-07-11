@@ -60,7 +60,7 @@ export const getGame = async (gameId: string): Promise<GameResponse> => {
     status: game.status as GameStatus,
     correctWord: correctWordResponse,
     startedAt: game.startedAt,
-    endedAt: game.endetAt || undefined,
+    endedAt: game.endedAt || undefined,
     guesses: game.guesses.map(
       (guess: Guess) =>
         ({
@@ -146,7 +146,7 @@ export const makeGuess = async (
     },
     data: {
       status: newGameState,
-      endetAt: endedAt,
+      endedAt: endedAt,
     },
   });
 
