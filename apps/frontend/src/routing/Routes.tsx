@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import GamePage from "../pages/GamePage";
 import MenuPage from "../pages/MenuPage";
+import LeaderboardPage from "../pages/LeaderboardPage";
 
 export default function App() {
   return (
@@ -9,6 +10,7 @@ export default function App() {
       {/* Route for a specific game by UUID */}
       <Route path="/game/:uuid" element={<GamePage />} />
       {/* Redirect unknown routes to home */}
+      <Route path="/leaderboard" element={<LeaderboardPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

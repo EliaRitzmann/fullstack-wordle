@@ -246,12 +246,68 @@ export interface GameStartPost400Response {
      */
     'error'?: string;
 }
+/**
+ * 
+ * @export
+ * @interface LeaderboardGet200Response
+ */
+export interface LeaderboardGet200Response {
+    /**
+     * 
+     * @type {Array<LeaderboardGet200ResponseEntriesInner>}
+     * @memberof LeaderboardGet200Response
+     */
+    'entries'?: Array<LeaderboardGet200ResponseEntriesInner>;
+}
+/**
+ * 
+ * @export
+ * @interface LeaderboardGet200ResponseEntriesInner
+ */
+export interface LeaderboardGet200ResponseEntriesInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof LeaderboardGet200ResponseEntriesInner
+     */
+    'username'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LeaderboardGet200ResponseEntriesInner
+     */
+    'startedAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LeaderboardGet200ResponseEntriesInner
+     */
+    'endedAt'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof LeaderboardGet200ResponseEntriesInner
+     */
+    'maxNumberOfGuesses'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof LeaderboardGet200ResponseEntriesInner
+     */
+    'word'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof LeaderboardGet200ResponseEntriesInner
+     */
+    'durationSeconds'?: number;
+}
 
 /**
- * DefaultApi - axios parameter creator
+ * GameApi - axios parameter creator
  * @export
  */
-export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
+export const GameApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * Fetch the details of a specific game using its unique gameId.
@@ -382,11 +438,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 };
 
 /**
- * DefaultApi - functional programming interface
+ * GameApi - functional programming interface
  * @export
  */
-export const DefaultApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration)
+export const GameApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = GameApiAxiosParamCreator(configuration)
     return {
         /**
          * Fetch the details of a specific game using its unique gameId.
@@ -398,7 +454,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         async gameGameIdGet(gameId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GameGameIdGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.gameGameIdGet(gameId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.gameGameIdGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['GameApi.gameGameIdGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -412,7 +468,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         async gameGuessPost(gameId: string, wordGuess: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GameGameIdGet200ResponseGuessesInner>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.gameGuessPost(gameId, wordGuess, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.gameGuessPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['GameApi.gameGuessPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -427,18 +483,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         async gameStartPost(username: string, maxNumberOfGuesses?: number, wordLength?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GameStartPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.gameStartPost(username, maxNumberOfGuesses, wordLength, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.gameStartPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['GameApi.gameStartPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
- * DefaultApi - factory interface
+ * GameApi - factory interface
  * @export
  */
-export const DefaultApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = DefaultApiFp(configuration)
+export const GameApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = GameApiFp(configuration)
     return {
         /**
          * Fetch the details of a specific game using its unique gameId.
@@ -477,22 +533,22 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
 };
 
 /**
- * DefaultApi - object-oriented interface
+ * GameApi - object-oriented interface
  * @export
- * @class DefaultApi
+ * @class GameApi
  * @extends {BaseAPI}
  */
-export class DefaultApi extends BaseAPI {
+export class GameApi extends BaseAPI {
     /**
      * Fetch the details of a specific game using its unique gameId.
      * @summary Retrieve game details
      * @param {string} gameId The unique identifier of the game. Must be a valid UUID.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof GameApi
      */
     public gameGameIdGet(gameId: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).gameGameIdGet(gameId, options).then((request) => request(this.axios, this.basePath));
+        return GameApiFp(this.configuration).gameGameIdGet(gameId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -502,10 +558,10 @@ export class DefaultApi extends BaseAPI {
      * @param {string} wordGuess The word being guessed. Must be a non-empty string.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof GameApi
      */
     public gameGuessPost(gameId: string, wordGuess: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).gameGuessPost(gameId, wordGuess, options).then((request) => request(this.axios, this.basePath));
+        return GameApiFp(this.configuration).gameGuessPost(gameId, wordGuess, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -516,10 +572,111 @@ export class DefaultApi extends BaseAPI {
      * @param {number} [wordLength] The length of the word to guess. Must be greater than 3. Defaults to 5.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof GameApi
      */
     public gameStartPost(username: string, maxNumberOfGuesses?: number, wordLength?: number, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).gameStartPost(username, maxNumberOfGuesses, wordLength, options).then((request) => request(this.axios, this.basePath));
+        return GameApiFp(this.configuration).gameStartPost(username, maxNumberOfGuesses, wordLength, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * LeaderboardApi - axios parameter creator
+ * @export
+ */
+export const LeaderboardApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Returns the top 10 players who won the game in the shortest time.
+         * @summary Get top 10 leaderboard entries
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        leaderboardGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/leaderboard`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * LeaderboardApi - functional programming interface
+ * @export
+ */
+export const LeaderboardApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = LeaderboardApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Returns the top 10 players who won the game in the shortest time.
+         * @summary Get top 10 leaderboard entries
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async leaderboardGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LeaderboardGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.leaderboardGet(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['LeaderboardApi.leaderboardGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * LeaderboardApi - factory interface
+ * @export
+ */
+export const LeaderboardApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = LeaderboardApiFp(configuration)
+    return {
+        /**
+         * Returns the top 10 players who won the game in the shortest time.
+         * @summary Get top 10 leaderboard entries
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        leaderboardGet(options?: RawAxiosRequestConfig): AxiosPromise<LeaderboardGet200Response> {
+            return localVarFp.leaderboardGet(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * LeaderboardApi - object-oriented interface
+ * @export
+ * @class LeaderboardApi
+ * @extends {BaseAPI}
+ */
+export class LeaderboardApi extends BaseAPI {
+    /**
+     * Returns the top 10 players who won the game in the shortest time.
+     * @summary Get top 10 leaderboard entries
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LeaderboardApi
+     */
+    public leaderboardGet(options?: RawAxiosRequestConfig) {
+        return LeaderboardApiFp(this.configuration).leaderboardGet(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -4,7 +4,7 @@ api.ts
 base.ts
 common.ts
 configuration.ts
-docs/DefaultApi.md
+docs/GameApi.md
 docs/GameGameIdGet200Response.md
 docs/GameGameIdGet200ResponseGuessesInner.md
 docs/GameGameIdGet400Response.md
@@ -12,5 +12,8 @@ docs/GameGameIdGet404Response.md
 docs/GameGuessPost404Response.md
 docs/GameStartPost200Response.md
 docs/GameStartPost400Response.md
+docs/LeaderboardApi.md
+docs/LeaderboardGet200Response.md
+docs/LeaderboardGet200ResponseEntriesInner.md
 git_push.sh
 index.ts

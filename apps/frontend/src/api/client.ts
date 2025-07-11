@@ -1,7 +1,8 @@
-import { DefaultApi, Configuration } from './generated';
+import { GameApi, LeaderboardApi, Configuration } from "./generated";
 
 const apiConfig = new Configuration({
-  basePath: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
+  basePath: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
 });
 
-export const api = new DefaultApi(apiConfig);
+export const api = new GameApi(apiConfig);
+export const leaderboardApi = new LeaderboardApi(apiConfig);
